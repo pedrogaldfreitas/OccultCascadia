@@ -20,9 +20,38 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: a5920c1dbf42c18488e80b971af90de7, type: 3}
+      value: {fileID: 21300000, guid: f07cc3ed9bd4251448b4c2b7ebe62494, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: f07cc3ed9bd4251448b4c2b7ebe62494, type: 3}
     attribute: m_Sprite
-    path: PlayerHeadParent/PlayerHead
+    path: HeadParent/Head
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: 625f436f9d0e1524bbfcb78cc4a17d9a, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: 625f436f9d0e1524bbfcb78cc4a17d9a, type: 3}
+    attribute: m_Sprite
+    path: HeadParent/EarsParent/Ears
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: b33d5b5c30d848648808bd2c2ef92476, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: b33d5b5c30d848648808bd2c2ef92476, type: 3}
+    attribute: m_Sprite
+    path: HeadParent/HairFrontParent/HairFront
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: 7a175fec455430147990f372b578abfe, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: 7a175fec455430147990f372b578abfe, type: 3}
+    attribute: m_Sprite
+    path: HeadParent/HairBackParent/HairBack
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -33,20 +62,48 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 1925399441
+      path: 201699351
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - serializedVersion: 2
+      path: 3537866075
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - serializedVersion: 2
+      path: 1724324344
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - serializedVersion: 2
+      path: 2696059304
       attribute: 0
       script: {fileID: 0}
       typeID: 212
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: a5920c1dbf42c18488e80b971af90de7, type: 3}
+    - {fileID: 21300000, guid: f07cc3ed9bd4251448b4c2b7ebe62494, type: 3}
+    - {fileID: 21300000, guid: f07cc3ed9bd4251448b4c2b7ebe62494, type: 3}
+    - {fileID: 21300000, guid: 625f436f9d0e1524bbfcb78cc4a17d9a, type: 3}
+    - {fileID: 21300000, guid: 625f436f9d0e1524bbfcb78cc4a17d9a, type: 3}
+    - {fileID: 21300000, guid: b33d5b5c30d848648808bd2c2ef92476, type: 3}
+    - {fileID: 21300000, guid: b33d5b5c30d848648808bd2c2ef92476, type: 3}
+    - {fileID: 21300000, guid: 7a175fec455430147990f372b578abfe, type: 3}
+    - {fileID: 21300000, guid: 7a175fec455430147990f372b578abfe, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 1.0166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

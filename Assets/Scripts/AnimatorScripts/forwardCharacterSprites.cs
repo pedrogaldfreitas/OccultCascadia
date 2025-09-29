@@ -7,37 +7,38 @@ public class forwardCharacterSprites : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Transform headParent = animator.transform.Find("HeadParent");
-        headParent.localPosition = new Vector3(0.02456055f, 1.374301f, 0.2f);
-        headParent.transform.Find("HairFront").localPosition = new Vector3(-0.0953f, 0.4152f, -0.2f);
-        headParent.transform.Find("HairBack").localPosition = new Vector3(0.0032f, -0.5213f, 0.2f);
+        headParent.localPosition = new Vector3(0.0269f, 1.374301f, 0.2f);
         animator.transform.Find("EyesParent").localPosition = new Vector3(0.00416f, 1.26767f, 0.1f);
         animator.transform.Find("NoseParent").localPosition = new Vector3(0.00644f, 1.04531f, 0.1f);
         animator.transform.Find("MouthParent").localPosition = new Vector3(0.01778f, 0.75943f, 0.1f);
-        animator.transform.Find("TorsoParent").localPosition = new Vector3(-0.002665f, 0.22623f, 0.3f);
 
+        Transform torsoParent = animator.transform.Find("TorsoParent");
+        torsoParent.localPosition = new Vector3(-0.002665f, 0.22623f, 0.3f);
         Transform playerArms = animator.transform.Find("Arms");
-        playerArms.localPosition = new Vector3(-2.472654f, 4.085711f, 0);
+        playerArms.localPosition = new Vector3(-2.472654f, 4.085711f, 0.4f);
+        animator.transform.Find("LegsParent").localPosition = new Vector3(0.0198f, -0.5325f, 0.3f);
+
+        headParent.transform.Find("HairFrontParent").localPosition = new Vector3(-0.0953f, 0.4152f, -0.5f);
+        headParent.transform.Find("EarsParent").localPosition = new Vector3(-0.0023f, -0.1701f, 0.5f);
+        headParent.transform.Find("HairBackParent").localPosition = new Vector3(0.0032f, -0.5213f, 1.0f);
+
+        torsoParent.transform.Find("TopParent").localPosition = new Vector3(0.00004f, -0.2087495f, -0.05f);
 
         Transform leftArmParent = playerArms.Find("LeftArmParent");
         Transform rightArmParent = playerArms.Find("RightArmParent");
         Transform leftSleeve = leftArmParent.Find("LeftSleeveParent");
         Transform rightSleeve = rightArmParent.Find("RightSleeveParent");
 
-        leftArmParent.localPosition = new Vector3(14.41465f, -20.9424f, 0.6f);
+        leftArmParent.localPosition = new Vector3(14.41465f, -20.9424f, 0.1f);
         leftArmParent.localScale = new Vector3(2.26892f, 2.26892f, 1);
-        rightArmParent.localPosition = new Vector3(10.2626f, -20.9878f, 0.6f);
+        rightArmParent.localPosition = new Vector3(10.2626f, -20.9878f, 0.1f);
         rightArmParent.localScale = new Vector3(2.26892f, 2.26892f, 1);
-
-        //NOTE: Moving LeftArm or RightArm should be reserved for the animator. Instead, change the pivot of the back arm sprite + sleeve sprites and set only the position of leftArmParent and rightArmParent accordingly.
-        //leftArmParent.Find("LeftArm").localPosition = new Vector3(0, 0, 0); 
-        //rightArmParent.Find("RightArm").localPosition = new Vector3(0.2558f, -0.083f, 0);
-
-        leftSleeve.localPosition = new Vector3(-0.23995f, 0.95505f, -0.1f);
+        leftSleeve.localPosition = new Vector3(-0.23995f, 0.95505f, -0.05f);
         leftSleeve.localScale = new Vector3(-1, 1, 1);
-        rightSleeve.localPosition = new Vector3(0.24005f, 0.95505f, -0.1f);
+        rightSleeve.localPosition = new Vector3(0.24005f, 0.95505f, -0.05f);
         rightSleeve.localScale = new Vector3(1, 1, 1);
 
-        animator.transform.Find("LegsParent").localPosition = new Vector3(0.0198f, -0.5325f, 0.4f);
+
     }
 
 }
