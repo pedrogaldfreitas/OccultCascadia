@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: KidRightArmFront
+  m_Name: KidRightArmBack
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -27,15 +27,6 @@ AnimationClip:
     path: Arms/RightArmParent/RightArm
     classID: 212
     script: {fileID: 0}
-  - curve:
-    - time: 0
-      value: {fileID: 21300000, guid: 27c53b3944c03e348a0b349ec1670f72, type: 3}
-    - time: 1
-      value: {fileID: 21300000, guid: 27c53b3944c03e348a0b349ec1670f72, type: 3}
-    attribute: m_Sprite
-    path: Arms/RightArmParent/RightSleeveParent/RightSleeve
-    classID: 212
-    script: {fileID: 0}
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -50,18 +41,9 @@ AnimationClip:
       typeID: 212
       customType: 23
       isPPtrCurve: 1
-    - serializedVersion: 2
-      path: 225093528
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
     pptrCurveMapping:
     - {fileID: 21300000, guid: 88f6247353aa92448b772501ed8a06a5, type: 3}
     - {fileID: 21300000, guid: 88f6247353aa92448b772501ed8a06a5, type: 3}
-    - {fileID: 21300000, guid: 27c53b3944c03e348a0b349ec1670f72, type: 3}
-    - {fileID: 21300000, guid: 27c53b3944c03e348a0b349ec1670f72, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
