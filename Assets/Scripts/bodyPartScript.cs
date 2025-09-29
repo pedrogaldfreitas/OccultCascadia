@@ -28,7 +28,7 @@ public class bodyPartScript : MonoBehaviour
     {
         if (this.gameObject.tag == "bodypart" || this.gameObject.tag == "bodypart(arm)")
         {
-            thisRenderer.sortingOrder = legsRenderer.sortingOrder + 1;
+            thisRenderer.sortingOrder = legsRenderer.sortingOrder;
             //FIX AND USE THIS EVENTUALLY: thisRenderer.sortingOrder = legsRenderer.sortingOrder +1 + (int)parentTransform.Find("Shadow").GetComponent<newShadowScript>().floorHeight;
         }
     }
