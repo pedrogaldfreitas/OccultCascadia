@@ -33,15 +33,15 @@ public class FakeHeightObject : MonoBehaviour
 
     private void Start()
     {
-        height = (float)Decimal.Round((Decimal)(transBody.position.y - transShadow.position.y), 3);
+        height = (float)Decimal.Round((Decimal)(transBody.position.y - transShadow.position.y), 4);
         prevGroundVelocity = new Vector2(0, 0);
-        shadowOffset = transShadow.transform.localPosition.y;
+        shadowOffset = (float)Decimal.Round((Decimal)(transShadow.transform.localPosition.y), 4);
 
         heightOfObject = transBody.GetComponent<Collider2D>().bounds.size.y; //Collider of object must be its first collider.
-
         if (startingPlatform)
         {
-            transShadow.GetComponent<newShadowScript>().floorHeight = startingPlatform.Find("top").GetComponent<platformScript>().floorHeight;
+            Rise(startingPlatform.Find("top").GetComponent<platformScript>().floorHeight);
+            //transShadow.GetComponent<newShadowScript>().floorHeight = startingPlatform.Find("top").GetComponent<platformScript>().floorHeight;
         }
     }
 
@@ -95,7 +95,6 @@ public class FakeHeightObject : MonoBehaviour
     public void Rise(float newFloorHeight)
     {
         float floorHeightToAdd = newFloorHeight - transShadow.GetComponent<newShadowScript>().floorHeight;
-
         if (!isGrounded)
         {
             transShadow.position += Vector3.up * floorHeightToAdd;

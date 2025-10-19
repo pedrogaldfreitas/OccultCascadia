@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class solidScript : MonoBehaviour
 {
+    //NOTE: This script is obsolete. Do not use.
+
     //This is the "clearance" height of the object (if other object is above this height, it ignores collisions with it. SET AUTOMATICALLY VIA Start()
     public float solidHeight;
 

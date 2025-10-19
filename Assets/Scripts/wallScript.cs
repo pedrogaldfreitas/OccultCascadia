@@ -24,7 +24,6 @@ public class wallScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("pappapia");
         if (collision.gameObject.GetComponentInChildren<newShadowScript>().floorHeight >= upperPlatform.GetComponent<platformScript>().floorHeight)
         {
             objectToIgnore = collision.transform;

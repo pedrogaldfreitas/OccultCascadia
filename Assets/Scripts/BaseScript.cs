@@ -48,6 +48,7 @@ public class BaseScript : MonoBehaviour
         bool belowWall = solidHeightFromBase > fakeHeightObj.heightOfObject + shadow.floorHeight + fakeHeightObj.height + fakeHeightObj.shadowOffset;
 
         Physics2D.IgnoreCollision(baseCollider, otherCollider, true);
+        Debug.Log("PEDROLOG^1: Disabling collisions between the platform base and " + otherCollider.name);
         while (aboveWall || belowWall || Physics2D.Distance(baseCollider, otherCollider).isOverlapped || collidersTouchingSlope.Contains(otherCollider))
         {
             aboveWall = shadow.floorHeight + fakeHeightObj.height + fakeHeightObj.shadowOffset >= solidHeight;
@@ -55,7 +56,7 @@ public class BaseScript : MonoBehaviour
 
             yield return null;
         }
-
+        Debug.Log("PEDROLOG^2: Enabling collisions between the platform base and " + otherCollider.name);
         collidersBeingIgnored.Remove(otherCollider);
         Physics2D.IgnoreCollision(baseCollider, otherCollider, false);
     }
@@ -91,22 +92,12 @@ public class BaseScript : MonoBehaviour
                 float slopeHeightAtCollisionPoint = FloorheightFunctions.FindSlopeFloorh(shadow.transform, slopeScript.transform);
                 float lowestPlatformFH = System.Math.Min(slopeScript.h1, slopeScript.h2);
                 aboveWall = shadow.floorHeight + fakeHeightObj.height + fakeHeightObj.shadowOffset >= lowestPlatformFH + slopeHeightAtCollisionPoint;
-                if (transform.parent.name == "Vertical Slope")
-                {
-                    //Debug.Log("PEDROLOG/2: aboveWall = " + aboveWall);
-                }
             } else
             {
-                if (transform.parent.name == "Square Platform")
-                {
-                    Debug.Log("PEDROLOG: aboveWall? = " + aboveWall);
-                }
                 aboveWall = shadow.floorHeight + fakeHeightObj.height + fakeHeightObj.shadowOffset >= solidHeight;
             }
 
             bool belowWall = solidHeightFromBase > fakeHeightObj.heightOfObject + shadow.floorHeight + fakeHeightObj.height + fakeHeightObj.shadowOffset;
-
-            Debug.Log("PEDROLOG: aboveWall? = " + aboveWall);
 
             if (aboveWall || belowWall)
             {
