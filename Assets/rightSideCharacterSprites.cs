@@ -38,7 +38,5 @@ public class rightSideCharacterSprites : StateMachineBehaviour
         leftSleeve.localScale = new Vector3(1, 1, 1);
         rightSleeve.localPosition = new Vector3(0.04985f, 1.0299f, -0.05f);
         rightSleeve.localScale = new Vector3(1, 1, 1);
-
-
     }
 }

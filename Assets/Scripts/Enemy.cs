@@ -24,6 +24,10 @@ public class Enemy : MonoBehaviour
     //A light enemy can be launched back by being wacked with a stick. (Raccoon is light, bear is not)
     public bool lightEnemy;
 
+    //Audio variables
+    private AudioSource audioSource;
+    public AudioClip[] takeDamageAudio;
+
     Transform healthBar;
 
     private void Start()
@@ -35,6 +39,8 @@ public class Enemy : MonoBehaviour
         parentRB = parent.GetComponent<Rigidbody2D>();
         playerShadow = GameObject.Find("Player").transform.Find("Shadow");
         //Physics2D.IgnoreCollision(transform.parent.Find("Shadow").GetComponent<BoxCollider2D>(), GameObject.Find("Player").transform.Find("Shadow").GetComponent<BoxCollider2D>(), true);
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -61,6 +67,7 @@ public class Enemy : MonoBehaviour
         enemyHealth -= hitForce;
         healthBar.localScale = new Vector3(((float)enemyHealth / (float)baseEnemyHealth)*16f, healthBar.localScale.y, healthBar.localScale.z);
 
+        PlayTakeDamageAudio();
         StartCoroutine(GetKnockedBack(hitForce, direction, groundSpeedToLaunch));
 
         return;
@@ -136,5 +143,14 @@ public class Enemy : MonoBehaviour
             }
         }
 
+    }
+
+    public void PlayTakeDamageAudio()
+    {
+        int rndNum = Random.Range(0, takeDamageAudio.Length);
+        audioSource.clip = takeDamageAudio[rndNum];
+
+        audioSource.Play();
+        return;
     }
 }

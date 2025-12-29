@@ -11,7 +11,7 @@ public class PlayerAttack : MonoBehaviour
 
     private GameObject attackPos;
     private Transform stickObj;
-    public Transform attackCirclePos;
+    public Transform attackHitbox;
     private Transform playerParent;
     public float attackRange;
 
@@ -122,69 +122,20 @@ public class PlayerAttack : MonoBehaviour
         contactFilter.useLayerMask = true;
         contactFilter.useTriggers = true;
         List<Collider2D> enemiesToDamage = new List<Collider2D>();
-        Physics2D.OverlapCollider(attackCirclePos.GetComponent<PolygonCollider2D>(), contactFilter, enemiesToDamage);
+        Physics2D.OverlapCollider(attackHitbox.GetComponent<PolygonCollider2D>(), contactFilter, enemiesToDamage);
 
         bool isBigSwing = (swingNum == 4);
 
         for (int i = 0; i < enemiesToDamage.Count; i++)
         {
             Collider2D enemy = enemiesToDamage[i];
-            if (PlayerFacing.playerFacingDir == PlayerFacing.facingDir.DOWN)
+            if (enemy.tag == "InteractObject")
             {
-
-                if (enemy.transform.position.y <= attackCirclePos.position.y)
-                {
-                    if (enemy.tag == "InteractObject")
-                    {
-                        enemy.GetComponent<breakableObjectScript>().TakeDamage(damage, true);
-                    }
-                    else
-                    {
-                        hitEnemy(enemiesToDamage[i], hitForce);
-                    }
-                }
+                enemy.GetComponent<breakableObjectScript>().TakeDamage(damage, true);
             }
-            else if (PlayerFacing.playerFacingDir == PlayerFacing.facingDir.UP)
+            else
             {
-                if (enemy.transform.position.y >= attackCirclePos.position.y)
-                {
-                    if (enemy.tag == "InteractObject")
-                    {
-                        enemy.GetComponent<breakableObjectScript>().TakeDamage(damage, true);
-                    }
-                    else
-                    {
-                        hitEnemy(enemy, hitForce);
-                    }
-                }
-            }
-            else if (PlayerFacing.playerFacingDir == PlayerFacing.facingDir.LEFT)
-            {
-                if (enemy.transform.position.x <= attackCirclePos.position.x)
-                {
-                    if (enemy.tag == "InteractObject")
-                    {
-                        enemy.GetComponent<breakableObjectScript>().TakeDamage(damage, true);
-                    }
-                    else
-                    {
-                        hitEnemy(enemy, hitForce);
-                    }
-                }
-            }
-            else if (PlayerFacing.playerFacingDir == PlayerFacing.facingDir.RIGHT)
-            {
-                if (enemy.transform.position.x >= attackCirclePos.position.x)
-                {
-                    if (enemy.tag == "InteractObject")
-                    {
-                        enemy.GetComponent<breakableObjectScript>().TakeDamage(damage, true);
-                    }
-                    else
-                    {
-                        hitEnemy(enemy, hitForce);
-                    }
-                }
+                hitEnemy(enemy, hitForce);
             }
         }
     }
@@ -245,6 +196,7 @@ public class PlayerAttack : MonoBehaviour
         }
         swingBufferingAllowed = false;
 
+        //DISABLED (AT LEAST FOR NOW) because swingNum is no longer needed.
         attackAnimator.SetFloat("SwingNum", swingNum);
         attackAnimator.SetTrigger("Zkey");        
         

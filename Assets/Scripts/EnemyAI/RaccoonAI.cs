@@ -114,4 +114,5 @@ public class RaccoonAI : MonoBehaviour
         spriteRenderer.color = color1;
         CR_running = false;
     }
+
 }

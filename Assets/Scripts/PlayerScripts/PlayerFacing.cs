@@ -17,6 +17,7 @@ public class PlayerFacing : MonoBehaviour
     }
 
     // Update is called once per frame
+
     void Update()
     {
         AnimatorStateInfo animStateInfo = animator.GetCurrentAnimatorStateInfo(0);
