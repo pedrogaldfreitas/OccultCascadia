@@ -19,7 +19,7 @@ public class RaccoonAI : MonoBehaviour
     private Enemy enemyScript;
     private Rigidbody2D parentRB;
 
-    public enum State { EATINGTRASH, CHASE, JUMPATTACK, ALERT, RELOCATE, BACKANDFORTHJUMPTEST };
+    public enum State { IDLE, CHASE, DASH, JUMPATTACK, ALERT, RELOCATE, BACKANDFORTHJUMPTEST };
     public State raccoonState;
 
     private bool CR_running;
@@ -43,7 +43,7 @@ public class RaccoonAI : MonoBehaviour
     {
         switch(raccoonState)
         {
-            case State.EATINGTRASH:
+            case State.IDLE:
                 distanceFromPlayer = Vector2.Distance(playerLandTarget.position, landTarget.position);
                 //IDEA: Raccoon is chill when player is far away.
                 if (distanceFromPlayer >= growlRadius)
@@ -75,6 +75,8 @@ public class RaccoonAI : MonoBehaviour
                         //raccoonState = State.JUMPATTACK;
                     }
                 }
+                break;
+            case State.DASH:
                 break;
             case State.JUMPATTACK:
                 //moveSpot = Vector2.MoveTowards(transform.position, player.transform.position, speed / 8f);
