@@ -9,17 +9,34 @@ public class RaccoonAI : MonoBehaviour
     public int growlRadius = 50;
     [Range(0, 50)]
     public int attackRadius = 50;
+    [Range(0, 50)]
+    public int minDashRadius = 30;
+
     public float speed;
     public Vector2 moveDirection;
+
     private float distanceFromPlayer;
+    private float chaseTimer = 0f;
 
     private Transform parent;
     private Transform landTarget;
     private Transform playerLandTarget;
     private Enemy enemyScript;
     private Rigidbody2D parentRB;
+    private SpriteRenderer spriteRenderer;
 
-    public enum State { IDLE, CHASE, DASH, JUMPATTACK, ALERT, RELOCATE, BACKANDFORTHJUMPTEST };
+
+    public enum State {
+        IDLE,
+        CHASE,
+        CHARGE,
+        MAKESPACE,
+        JUMPATTACK,
+        JUMPATTACKFAST,
+        ALERT,
+        RELOCATE,
+        BACKANDFORTHJUMPTEST
+    };
     public State raccoonState;
 
     private bool CR_running;
@@ -30,12 +47,14 @@ public class RaccoonAI : MonoBehaviour
     void Start()
     {
         enemyScript = GetComponent<Enemy>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         CR_running = false;
         moveDirection = new Vector2(0, 0);
+
         playerLandTarget = GameObject.Find("Player").transform.Find("LandTarget");
         parent = transform.parent;
         parentRB = parent.GetComponent<Rigidbody2D>();
-        landTarget = transform.parent.Find("LandTarget");
+        landTarget = parent.Find("LandTarget");
     }
 
     // Update is called once per frame
@@ -72,16 +91,59 @@ public class RaccoonAI : MonoBehaviour
 
                     if (Vector2.Distance(transform.position, playerLandTarget.transform.position) < 15)
                     {
-                        //raccoonState = State.JUMPATTACK;
+                        raccoonState = State.JUMPATTACK;
+                    }
+
+                    if (Vector2.Distance(landTarget.position, playerLandTarget.position) >= minDashRadius)
+                    {
+                        MaybeDash();
                     }
                 }
                 break;
-            case State.DASH:
+            case State.CHARGE:
+                ChangeRaccoonColor("blue");
+                if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked) {
+                    moveDirection = (playerLandTarget.position - landTarget.position).normalized;
+                    parentRB.MovePosition(parent.position + (Vector3)(moveDirection * speed / 15f * 2.2f));
+
+                    if (Vector2.Distance(transform.position, playerLandTarget.transform.position) < 20f)
+                    {
+                        raccoonState = State.JUMPATTACKFAST;
+                    }
+                }
                 break;
             case State.JUMPATTACK:
-                //moveSpot = Vector2.MoveTowards(transform.position, player.transform.position, speed / 8f);
-                //parent.gameObject.GetComponent<FakeHeightObject>().Jump((moveSpot - currSpot)*30f, 40);
-                raccoonState = State.CHASE;
+                ChangeRaccoonColor("blue");
+                if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked) {
+                    moveDirection = (playerLandTarget.position - landTarget.position).normalized;
+                    parent.GetComponent<FakeHeightObject>().Jump(moveDirection * speed * 6f, 40);
+                    raccoonState = State.MAKESPACE;
+                }
+                break;
+            case State.JUMPATTACKFAST:
+                ChangeRaccoonColor("blue");
+                if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked) {
+                    moveDirection = (playerLandTarget.position - landTarget.position).normalized;
+                    parent.GetComponent<FakeHeightObject>().Jump(moveDirection * speed * 12f, 32);
+                    raccoonState = State.MAKESPACE;
+                }
+                break;
+            case State.MAKESPACE:
+                ChangeRaccoonColor("green");
+                chaseTimer = 0f;
+
+                if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked)
+                {
+                    if (Vector2.Distance(landTarget.position, playerLandTarget.position) <= 30f)
+                    {
+                        moveDirection = (landTarget.position - playerLandTarget.position).normalized;
+                        parentRB.MovePosition(parent.position + (Vector3)(moveDirection * speed * 0.8f / 15f));
+                    }
+                    else
+                    {
+                        raccoonState = State.CHASE;
+                    }
+                }
                 break;
             case State.BACKANDFORTHJUMPTEST:
                 if (parent.GetComponent<FakeHeightObject>().isGrounded)
@@ -96,10 +158,25 @@ public class RaccoonAI : MonoBehaviour
 
     }
 
+    private void MaybeDash()
+    {
+        chaseTimer += Time.deltaTime;
+
+        // Every 1 second in CHASE, roll for a 1/5 chance to switch to DASH
+        if (chaseTimer >= 1f)
+        {
+            chaseTimer = 0f;
+
+            if (Random.Range(0, 5) == 0) // 0,1,2,3,4 => 1 in 5 chance
+            {
+                raccoonState = State.CHARGE;
+            }
+        }
+    }
+
     IEnumerator RaccoonBlink()
     {
         CR_running = true;
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color color1 = new Color(0.6981132f, 0.06915272f, 0.1973518f);
         Color color2 = new Color(1, 0, 0.113f);
         while (distanceFromPlayer < 30 && distanceFromPlayer >= 10)
@@ -117,4 +194,25 @@ public class RaccoonAI : MonoBehaviour
         CR_running = false;
     }
 
+    public void ChangeRaccoonColor(string color)
+    {
+        Color newColor = new Color(1, 0, 0.113f);
+        switch (color)
+        {
+            case "blue":
+                newColor = new Color(0, 0, 1f);
+                break;
+            case "red":
+                newColor = new Color(1, 0, 0);
+                break;
+            case "green":
+                newColor = new Color(0, 1, 0);
+                break;
+            default:
+                newColor = new Color(1, 0, 0.113f);
+                break;
+        }
+        spriteRenderer.color = newColor;
+        return;
+    }
 }
