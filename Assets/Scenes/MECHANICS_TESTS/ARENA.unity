@@ -1795,6 +1795,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1830848519257396795, guid: f6dc8fbf999e9d34086e5dd7cd6c029d,
+        type: 3}
+      propertyPath: growlRadius
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 1830848519257396795, guid: f6dc8fbf999e9d34086e5dd7cd6c029d,
+        type: 3}
+      propertyPath: attackRadius
+      value: 26
+      objectReference: {fileID: 0}
     - target: {fileID: 1830848520048065952, guid: f6dc8fbf999e9d34086e5dd7cd6c029d,
         type: 3}
       propertyPath: startingPlatform

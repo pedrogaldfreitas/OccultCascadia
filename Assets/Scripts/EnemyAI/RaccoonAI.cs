@@ -18,6 +18,8 @@ public class RaccoonAI : MonoBehaviour
     private float distanceFromPlayer;
     private float chaseTimer = 0f;
 
+    private float chaseDirectionTimer = 5f; //any value above 1.2f should be fine, just to kickstart the function.
+
     private Transform parent;
     private Transform landTarget;
     private Transform playerLandTarget;
@@ -84,10 +86,13 @@ public class RaccoonAI : MonoBehaviour
 
                 break;
             case State.CHASE:
+                ChangeRaccoonColor("red");
                 if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked)
                 {
-                    moveDirection = (playerLandTarget.position - landTarget.position).normalized;
-                    parentRB.MovePosition(parent.position + (Vector3)(moveDirection * speed / 15f));
+
+                    moveDirection = GetChaseDirectionAndSpeedEveryHereAndThere();
+                    //moveDirection = (playerLandTarget.position - landTarget.position).normalized;
+                    parentRB.MovePosition(parent.position + (Vector3)moveDirection * speed / 15f);
 
                     if (Vector2.Distance(transform.position, playerLandTarget.transform.position) < 15)
                     {
@@ -117,6 +122,7 @@ public class RaccoonAI : MonoBehaviour
                 if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked) {
                     moveDirection = (playerLandTarget.position - landTarget.position).normalized;
                     parent.GetComponent<FakeHeightObject>().Jump(moveDirection * speed * 6f, 40);
+                    chaseDirectionTimer = 5f;
                     raccoonState = State.MAKESPACE;
                 }
                 break;
@@ -125,6 +131,7 @@ public class RaccoonAI : MonoBehaviour
                 if (parent.GetComponent<FakeHeightObject>().isGrounded && !enemyScript.movementBlocked) {
                     moveDirection = (playerLandTarget.position - landTarget.position).normalized;
                     parent.GetComponent<FakeHeightObject>().Jump(moveDirection * speed * 12f, 32);
+                    chaseDirectionTimer = 5f;
                     raccoonState = State.MAKESPACE;
                 }
                 break;
@@ -167,29 +174,55 @@ public class RaccoonAI : MonoBehaviour
         {
             chaseTimer = 0f;
 
-            if (Random.Range(0, 5) == 0) // 0,1,2,3,4 => 1 in 5 chance
+            if (Random.Range(0, 4) == 0) // 1 in 4 chance
             {
                 raccoonState = State.CHARGE;
             }
         }
     }
 
+    private Vector2 GetChaseDirectionAndSpeedEveryHereAndThere()
+    {
+        if (chaseDirectionTimer >= 1.2f)
+        {
+            chaseDirectionTimer = 0f;
+            //Towards player + a perpendicular offset randomly selected within a range.
+            //Vector2 directionToPlayer = (playerLandTarget.position - landTarget.position).normalized;
+
+            float offset = Random.Range(-1, 1);
+            Vector3 perpendicularDirectionToPlayer = new Vector2(-moveDirection.y, moveDirection.x).normalized * offset;
+
+            return (playerLandTarget.position - landTarget.position + perpendicularDirectionToPlayer).normalized;
+
+            //return (Vector3)(((directionToPlayer * speed) + perpendicularDirectionToPlayer) / 15f);
+        } else
+        {
+            chaseTimer += Time.deltaTime;
+            return moveDirection;
+        }
+    }
+
     IEnumerator RaccoonBlink()
     {
         CR_running = true;
+
         Color color1 = new Color(0.6981132f, 0.06915272f, 0.1973518f);
         Color color2 = new Color(1, 0, 0.113f);
-        while (distanceFromPlayer < 30 && distanceFromPlayer >= 10)
+
+        while (true)
         {
-            if (spriteRenderer.color == color1)
+            distanceFromPlayer = Vector2.Distance(playerLandTarget.position, landTarget.position);
+
+            if (distanceFromPlayer >= growlRadius || distanceFromPlayer < attackRadius)
             {
-                spriteRenderer.color = color2;
-            } else
-            {
-                spriteRenderer.color = color1;
+                break;
             }
+
+            spriteRenderer.color = spriteRenderer.color == color1 ? color2 : color1;
+
             yield return new WaitForSeconds(0.25f);
         }
+
         spriteRenderer.color = color1;
         CR_running = false;
     }
@@ -214,5 +247,35 @@ public class RaccoonAI : MonoBehaviour
         }
         spriteRenderer.color = newColor;
         return;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Transform gizmoCenter = null;
+
+        if (landTarget != null)
+        {
+            gizmoCenter = landTarget;
+        }
+        else if (transform.parent != null)
+        {
+            Transform foundLandTarget = transform.parent.Find("LandTarget");
+
+            if (foundLandTarget != null)
+            {
+                gizmoCenter = foundLandTarget;
+            }
+        }
+
+        Vector3 center = gizmoCenter != null ? gizmoCenter.position : transform.position;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(center, growlRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(center, attackRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(center, minDashRadius);
     }
 }
